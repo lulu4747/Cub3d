@@ -6,7 +6,7 @@
 /*   By: lfourage <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/21 16:49:44 by lfourage          #+#    #+#             */
-/*   Updated: 2020/02/25 19:18:28 by lfourage         ###   ########lyon.fr   */
+/*   Updated: 2020/03/07 07:42:32 by lfourage         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,25 @@ int		ft_check_params(t_cub *t)
 	return (er);
 }
 
+static void	ft_errorbis(int error, t_cub *t)
+{
+	if (error == ERR_XPM)
+	{
+		write(2, "No xpm file found for \"", 23);
+		if (t->no->img == NULL)
+			ft_putstr_fd(t->no->path, 2);
+		else if (t->so->img == NULL)
+			ft_putstr_fd(t->so->path, 2);
+		else if (t->ea->img == NULL)
+			ft_putstr_fd(t->ea->path, 2);
+		else if (t->we->img == NULL)
+			ft_putstr_fd(t->we->path, 2);
+		else if (t->s->img == NULL)
+			ft_putstr_fd(t->s->path, 2);
+		write(2, "\"", 1);
+	}
+}
+
 void	ft_error(int error, t_cub *t)
 {
 	write (2, "Error\n", 6);
@@ -51,6 +70,7 @@ void	ft_error(int error, t_cub *t)
 	error == OPN_MAP ? write(2, "Opened map\n", 11) : 0;
 	error == UKN_OBJ ? write(2, "Unknowned object in map\n", 24) : 0;
 	error == ERR_NOPARAMS ? write(2, "No file found for map parameters\n", 33) : 0;
+	error == ERR_XPM ? ft_errorbis(error, t) : 0;
 	error > 0 ? write(2, "2 or more spawning points found in map\n", 39) : 0;
 	kill(t);
 }
@@ -74,11 +94,11 @@ int		ft_double_entry_check(int type, t_cub *t)
 
 	error = FALSE;
 	type == R && t->r != NULL ? error-- : 0;
-	type == NO && t->no != NULL ? error-- : 0;
-	type == SO && t->so != NULL ? error-- : 0;
-	type == WE && t->we != NULL ? error-- : 0;
-	type == EA && t->ea != NULL ? error-- : 0;
-	type == S && t->s != NULL ? error-- : 0;
+	type == NO && t->no->path != NULL ? error-- : 0;
+	type == SO && t->so->path != NULL ? error-- : 0;
+	type == WE && t->we->path != NULL ? error-- : 0;
+	type == EA && t->ea->path != NULL ? error-- : 0;
+	type == S && t->s->path != NULL ? error-- : 0;
 	type == F && t->f != ERROR ? error-- : 0;
 	type == C && t->c != ERROR ? error-- : 0;
 	if (error == ERROR)

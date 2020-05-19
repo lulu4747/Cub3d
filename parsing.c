@@ -6,7 +6,7 @@
 /*   By: lfourage <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/21 16:50:18 by lfourage          #+#    #+#             */
-/*   Updated: 2020/02/25 19:18:51 by lfourage         ###   ########lyon.fr   */
+/*   Updated: 2020/03/12 11:36:44 by lfourage         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,11 @@ int ft_texture(t_cub *t, char *line, int type)
 	}
 	if (!(tmp = ft_strdup(line)))
 		ft_error(ERR_MALLOC, t);
-	type == NO ? t->no = tmp : 0;
-	type == SO ? t->so = tmp : 0;
-	type == WE ? t->we = tmp : 0;
-	type == EA ? t->ea = tmp : 0;
-	type == S ? t->s = tmp : 0;
+	type == NO ? t->no->path = tmp : 0;
+	type == SO ? t->so->path = tmp : 0;
+	type == WE ? t->we->path = tmp : 0;
+	type == EA ? t->ea->path = tmp : 0;
+	type == S ? t->s->path = tmp : 0;
 	return (type);
 }
 

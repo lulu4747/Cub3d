@@ -6,7 +6,7 @@
 /*   By: lfourage <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/21 16:50:00 by lfourage          #+#    #+#             */
-/*   Updated: 2020/02/25 19:18:47 by lfourage         ###   ########lyon.fr   */
+/*   Updated: 2020/03/10 11:39:41 by lfourage         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,7 @@ t_grid	*g_setup(t_cub *t, t_grid *g, char **map)
 	g->sqcy = ((g->yl - 1) % 2 != 0 ) ? 0.5 : 0;
 	g->xc = (g->xl) / 2;
 	g->yc = (g->yl) / 2;
+	g->xsize = t->r[X] / g->xl;
+	g->ysize = t->r[Y] / g->yl;
 	return (g);
 }

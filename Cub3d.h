@@ -6,7 +6,7 @@
 /*   By: lfourage <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/21 16:49:29 by lfourage          #+#    #+#             */
-/*   Updated: 2020/02/27 11:45:26 by lfourage         ###   ########lyon.fr   */
+/*   Updated: 2020/03/12 12:08:17 by lfourage         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@
 # define OPN_MAP -6
 # define UKN_OBJ -7
 # define ERR_NOPARAMS -8
+# define ERR_XPM -9
 # define R 0
 # define NO 1
 # define SO 2
@@ -82,6 +83,24 @@
 ** ----------------------------Define Structure---------------------------- **
 */
 
+typedef struct		s_image
+{
+	void			*img;
+	int				*data;
+	int				bpp;
+	int				s_l;
+	int				end;
+}					t_img;
+
+typedef	struct		s_texture
+{
+	char			*path;
+	t_img			*img;
+	int				x;
+	int				y;
+}					t_txt;
+
+
 typedef struct		s_ray
 {
 	int				hit;
@@ -96,13 +115,18 @@ typedef struct		s_ray
 	float			ddisx;
 	float			ddisy;
 	float			lenght;
+	float			width;
 	float			height;
+	float			wallx;
 	int				wallstart;
 	int				wallend;
-	struct s_ray	*next;
+	t_txt			*walltxt;
+	float			step;
+	float			txtpos;
+	int				txtx;
 }					t_ray;
 
-typedef struct		s_cam
+typedef struct		s_camera
 {
 	float			posx;
 	float			posy;
@@ -112,8 +136,6 @@ typedef struct		s_cam
 	float			diry;
 	float			planex;
 	float			planey;
-	float			now;
-	float			before;
 	float			ms;
 	float			rs;
 	int				stepx;
@@ -129,9 +151,11 @@ typedef struct		s_grid
 	int				yc;
 	float			sqcx;
 	float			sqcy;
+	int				xsize;
+	int				ysize;
 }					t_grid;
 
-typedef struct		s_mmap
+typedef struct		s_minimap
 {
 	float			*grid;
 	void			*mnmap;
@@ -153,18 +177,15 @@ typedef	struct		s_cub
 	void			*bg;
 	char			*tmp;
 	int				*r;
-	char			*no;
-	char			*we;
-	char			*ea;
-	char			*so;
-	char			*s;
+	t_txt			*no;
+	t_txt			*we;
+	t_txt			*ea;
+	t_txt			*so;
+	t_txt			*s;
 	int				f;
 	int				c;
 	char			**map;
-	int				*tdata;
-	int				tbpp;
-	int				ts_l;
-	int				tend;
+	t_img			*all;
 	int				minmap;
 	int				press;
 	int				keyone;
@@ -175,6 +196,7 @@ typedef	struct		s_cub
 	t_cam			*ca;
 	t_mmap			*m;
 	t_grid			*g;
+	t_txt			*test;
 }					t_cub;
 
 /*
@@ -217,7 +239,20 @@ int					ft_parse_line(t_cub *t, char *line, int check, int fd);
 */
 
 t_grid				*g_setup(t_cub *t, t_grid *g, char **map);
-t_ray				*r_setup(t_cam *c, t_ray *r, int n);
+t_ray				*r_setup(t_ray *r);
+void				r_reset(t_cam *c, t_ray *r, int x);
+
+/*
+** -------------------------------Raycasting------------------------------- **
+*/
+
+void				raycasting(t_cub *t, t_cam *c);
+
+/*
+** ----------------------------------Utils--------------------------------- **
+*/
+
+void				spawnloc(t_cub *t, t_cam *c, int x, int y);
 
 /*
 ** ---------------------------------Minimap-------------------------------- **
@@ -233,7 +268,8 @@ void				putcam(t_cub *t, t_mmap *m, t_cam *c);
 ** --------------------------------Controls-------------------------------- **
 */
 
-int					key(int keycode, t_cub *t);
+int					key(int key, t_cub *t);
+int					release(int key, t_cub *t);
 
 /*
 ** ------------------------------Error Manager----------------------------- **
@@ -255,8 +291,5 @@ void				kill(t_cub *t);
 
 int					release(int key, t_cub *t);
 void				gomove(t_cub *t);
-void				move(int key, char **map, t_cam *c);
-void				straff(int key, char **map, t_cam *c);
-void				rotate(int key, t_cam *c);
 
 #endif

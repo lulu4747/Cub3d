@@ -6,13 +6,13 @@
 /*   By: lfourage <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/22 15:03:40 by lfourage          #+#    #+#             */
-/*   Updated: 2020/02/27 11:45:28 by lfourage         ###   ########lyon.fr   */
+/*   Updated: 2020/03/10 11:40:18 by lfourage         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Cub3d.h"
 
-void	move(int key, char **map, t_cam *c)
+static void	move(int key, char **map, t_cam *c)
 {
 	int		x;
 	int		y;
@@ -41,7 +41,7 @@ void	move(int key, char **map, t_cam *c)
 	c->sqposy = (int)c->posy;
 }
 
-void	straff(int key, char **map, t_cam *c)
+static void	straff(int key, char **map, t_cam *c)
 {
 	int		x;
 	int		y;
@@ -70,7 +70,7 @@ void	straff(int key, char **map, t_cam *c)
 	c->sqposy = (int)c->posy;
 }
 
-void	rotate(int key, t_cam *c)
+static void	rotate(int key, t_cam *c)
 {
 	float	oldx;
 	float	oldxp;
@@ -84,4 +84,11 @@ void	rotate(int key, t_cam *c)
 	c->diry = oldx * sin(rs) + c->diry * cos(rs);
 	c->planex = c->planex * cos(rs) - c->planey * sin(rs);
 	c->planey =  oldxp * sin(rs) + c->planey * cos(rs);
+}
+
+void		gomove(t_cub *t)
+{
+	t->keyone != NONE ? rotate(t->keyone, t->ca) : 0;
+	t->keytwo != NONE ? move(t->keytwo, t->map, t->ca) : 0;
+	t->keythree != NONE ? straff(t->keythree, t->map, t->ca) : 0;
 }
