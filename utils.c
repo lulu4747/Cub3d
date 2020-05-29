@@ -169,8 +169,8 @@ void	putimg(t_cub *t, void *target, int x, int y)
 
 void	ft_loop(t_cub *t)
 {
-	mlx_hook(t->scr, KEY_PRESS, 0, &key, t);
-	mlx_hook(t->scr, KEY_RELEASE, 0, &release, t);
+	mlx_hook(t->scr, KEY_PRESS, (1L << 0), &key, t);
+	mlx_hook(t->scr, KEY_RELEASE, (1L << 1), &release, t);
 	mlx_loop(t->init);
 }
 

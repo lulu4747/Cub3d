@@ -1,8 +1,8 @@
 R	2000 1080
-NO	./source/texture/wood.xpm
+NO	./source/texture/Wallmetal.xpm
 SO	./source/texture/Wallmetal.xpm
-WE	./source/texture/Wallstone.xpm
-EA	./source/texture/Wallpaper.xpm
+WE	./source/texture/Wallmetal.xpm
+EA	./source/texture/Wallmetal.xpm
 
 S	./s
 F  	120,175,87

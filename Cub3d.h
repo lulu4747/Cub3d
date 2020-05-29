@@ -53,18 +53,18 @@
 # define C 7
 # define MAP 8
 # define END 9
-# define FORWARD 13
-# define STRAFF_L 0
-# define BACKWARD 1
-# define STRAFF_R 2
-# define LOOK_UP 126
-# define LOOK_L 123
-# define LOOK_DWN 125
-# define LOOK_R 124
+# define FORWARD 122
+# define STRAFF_L 113
+# define BACKWARD 115
+# define STRAFF_R 100
+# define LOOK_UP 65362
+# define LOOK_L 65361
+# define LOOK_DWN 65364
+# define LOOK_R 65363
 # define SPACE 49
 # define CTRL 256
-# define MINIMAP 46
-# define ESC 53
+# define MINIMAP 97
+# define ESC 65307
 # define KEY_PRESS 2
 # define KEY_RELEASE 3
 
@@ -72,7 +72,7 @@
 ** --------------------------------Includes-------------------------------- **
 */
 
-# include "source/minilibx_opengl_20191021/mlx.h"
+# include "source/minilibx-linux-master/mlx.h"
 # include "source/libft/libft.h"
 # include "source/gnl/get_next_line.h"
 # include <stdio.h>

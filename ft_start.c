@@ -50,7 +50,7 @@ int		ft_start(t_cub *t)
 	makeall(t, t->all);
 	t = get_textures(t);
 	raycasting(t, t->ca);
-	mlx_key_hook(t->scr, &key, t);
+//	mlx_key_hook(t->scr, &key, t);
 	mlx_loop_hook(t->init, &loophook, t);
 	return (SUCCESS);
 }

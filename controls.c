@@ -43,7 +43,7 @@ int		key(int key, t_cub *t)
 		t->jump = TRUE;
 		t->time = 10;
 	}*/
-//	printf("%d\n", key);
+	printf("%d\n", key);
 	return (SUCCESS);
 }
 
