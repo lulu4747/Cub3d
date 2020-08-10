@@ -86,9 +86,15 @@ static void	rotate(int key, t_cam *c)
 	c->planey =  oldxp * sin(rs) + c->planey * cos(rs);
 }
 
+static void	showmgo(t_txt *no, t_cub *t)
+{
+	
+}
+
 void		gomove(t_cub *t)
 {
 	t->keyone != NONE ? rotate(t->keyone, t->ca) : 0;
 	t->keytwo != NONE ? move(t->keytwo, t->map, t->ca) : 0;
 	t->keythree != NONE ? straff(t->keythree, t->map, t->ca) : 0;
+//	t->minimap != FALSE ? showmgo(t->no, t) : 0;
 }

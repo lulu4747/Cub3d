@@ -149,7 +149,71 @@ static	int		raysweep(t_cub *t, t_cam *c, t_ray *r, int x)
 	return (SUCCESS);
 }
 
+static t_spr	*lstsorter(t_spr *f)
+{
+	t_spr	*tmp;
+	t_spr	*ftmp;
+	t_spr	*ntmp;
+	int	bl;
+
+	tmp = f->next;
+	ftmp = f;
+	bl = 0;
+	while (ftmp)
+	{
+		while (tmp)
+		{
+			if (ftmp->d >= tmp->d)
+				tmp = tmp->next;
+			else
+			{
+				ntmp = ftmp->next;
+				ftmp->next = tmp->next;
+				tmp->next = ntmp;
+				bl == 0 ? f = tmp : 0;
+				ftmp = f;
+				tmp = f->next;
+			}
+		}
+		bl = 1;
+		ftmp = ftmp->next;
+		if (ftmp)
+			tmp = ftmp->next;
+	}
+	return (f);
+}
+
+static void	sorter(t_cam *c, t_spr *spr)
+{
+	int	i;
+	t_spr	*f;
+
+	i = 0;
+	f = spr;
+	while (i < spr->d)
+	{
+		spr->d = sqrt(((spr->x - c->posx) * (spr->x - c->posx)) 
+				+ ((spr->y - c->posy) * (spr->y - c->posy)));
+		if (spr->next)
+			spr = spr->next;
+		i++;
+	}
+	spr = lstsorter(f);
+}
+
+static void	sprites(t_cub *t, t_spr *spr, t_cam *c)
+{
+	sorter(c, spr);
+}
+
+static void	show(t_spr *spr)
+{
+	printf("|%d%d| |%d%d|\n", (int)spr->x, (int)spr->y, (int)spr->next->x, (int)spr->next->y);
+}
+
 void	raycasting(t_cub *t, t_cam *c)
 {
 	raysweep(t, c, c->r, 0);
+	sprites(t, t->spr, c);
+	show(t->spr);
 }

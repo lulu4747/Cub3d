@@ -49,9 +49,9 @@ int		ft_start(t_cub *t)
 		return (ERR_NWIN);
 	makeall(t, t->all);
 	t = get_textures(t);
-	raycasting(t, t->ca);
-//	mlx_key_hook(t->scr, &key, t);
-	mlx_loop_hook(t->init, &loophook, t);
+//	raycasting(t, t->ca);
+//no	mlx_key_hook(t->scr, &key, t);
+//	mlx_loop_hook(t->init, &loophook, t);
 	return (SUCCESS);
 }
 
@@ -90,9 +90,9 @@ int		main(int ac, char **av)
 	}
 	check = ft_start(t);
 	mapparams(t);
-	if (check == SUCCESS)
-		ft_loop(t);
-	else
-		ft_error(check, t);
+//	if (check == SUCCESS)
+//		ft_loop(t);
+//	else
+//		ft_error(check, t);
 	return (0);
 }

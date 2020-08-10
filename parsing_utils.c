@@ -12,6 +12,20 @@
 
 #include "Cub3d.h"
 
+int	spr(t_spr *spr, int x, int y)
+{
+	while (spr->next != NULL)
+		spr = spr->next;
+	spr = spr->next;
+	if (!(spr = malloc(sizeof(t_spr))))
+		return (0);
+	spr->x = x + 0.5;
+	spr->y = y + 0.5;
+	spr->r = 0;
+	spr->next = NULL;
+	return (1);
+}
+
 int	ft_check_object(int c, char *set)
 {
 	int i;
@@ -26,29 +40,120 @@ int	ft_check_object(int c, char *set)
 	return (ERROR);
 }
 
+int	checkone(char c, int x, int y, t_cub *t)
+{
+	if (ft_check_object(c, "NSEW") == SUCCESS)
+		return (1);
+	if (c == '2')
+	{
+		if (t->spr == NULL)
+		{
+			if (!(t->spr = malloc(sizeof(t_spr))))
+				ft_error(ERR_MALLOC, t);
+			t->spr->x = x + 0.5;
+			t->spr->y = y + 0.5;
+			t->spr->r = 0;
+			t->spr->d = 1;
+			t->spr->next = NULL;
+			return (0);
+		}
+		else
+		{
+			if (spr(t->spr, x, y) == 0)
+				ft_error(ERR_MALLOC, t);
+			t->spr->d += 1;
+		}
+		return (0);
+	}
+	if (ft_check_object(c, "0123") == ERROR)
+		ft_error(UKN_OBJ, t);
+	return (0);
+}
+
+static int	opnchecknd(t_cub *t, char **m, int x, int y)
+{
+	int bl;
+
+	bl = 0;
+	if (m[y][x] == '3')
+	{
+		if (y != 0 && (m[y - 1][x] == '0' || m[y - 1][x] == '2'))
+		{
+			m[y - 1][x] = '3';
+			bl++;
+		}
+		if (x != 0 && (m[y][x - 1] == '0' || m[y][x - 1] == '2'))
+		{
+			m[y][x - 1] = '3';
+			bl++;
+		}
+		if (m[y + 1] && (m[y + 1][x] == '0' || m[y + 1][x] == '2'))
+		{
+			m[y + 1][x] = '3';
+			bl++;
+		}
+		if (m[y][x + 1] && (m[y][x + 1] == '0' || m[y][x + 1] == '2'))
+		{
+			m[y][x + 1] = '3';
+			bl++;
+		}
+	}
+	return (bl);
+}
+
+static void	opncheck(t_cub *t, char **m, int x, int y)
+{
+	m[y][x] = '3';
+	while (m[y])
+	{
+		while (m[y][x])
+		{
+			if (m[y][x] == '3' && y != 0 && x != 0 
+				&& m[y + 1] && m[y][x + 1])
+			{
+				if (opnchecknd(t, m, x, y) == 0)
+					x++;
+				else
+				{
+					x = 0;
+					y = 0;
+				}
+			}
+			else if (m[y][x] == '3')
+			{
+				printf("%d, %d\n", x, y);
+				ft_error(OPN_MAP, t);
+			}
+			else
+				x++;
+		}
+		y++;
+		x = 0;
+	}
+}
+
 int	ft_map_browser(t_cub *t, int len)
 {
 	int spawn;
 	int y;
 	int x;
+	int bl;
 
+	bl = 0;
 	spawn = 0;
 	y = 1;
 	while (t->map[y])
 	{
 		x = 0;
-		if (t->map[y][0] != WALL || t->map[y][len] != WALL)
-			ft_error(OPN_MAP, t);
-		while (x < len)
+		while (t->map[y][x])
 		{
-			if (t->map[y][x] == 'N' || t->map[y][x] == 'S'
-				|| t->map[y][x] == 'E' || t->map[y][x] == 'W')
+			spawn += checkone(t->map[y][x], x, y, t);
+			if (spawn == SUCCESS && bl == 0)
 			{
-				spawn++;
-				spawn == 1 ? spawnloc(t, t->ca, x, y) : 0;
+				spawnloc(t, t->ca, x, y);
+				opncheck(t, t->map, t->ca->sqposx, t->ca->sqposy);
+				bl++;
 			}
-			if (ft_check_object(t->map[y][x], "012NSEW") == ERROR)
-				ft_error(UKN_OBJ, t);
 			x++;
 		}
 		y++;
@@ -61,28 +166,13 @@ int	ft_map_browser(t_cub *t, int len)
 
 int	ft_check_map(t_cub *t)
 {
-	int len;
 	int rw;
 	int ln;
 
 	rw = 0;
 	ln = 0;
-	len = ft_strlen(t->map[rw]) - 1;
-	while (t->map[rw][ln])
-	{
-		if (t->map[rw][ln] != WALL)
-			ft_error(OPN_MAP, t);
-		ln++;
-	}
-	if ((rw = ft_map_browser(t, len)) == ERROR)
+	if ((rw = ft_map_browser(t)) == ERROR)
 		return (ERROR);
-	ln = 0;
-	while (t->map[rw][ln])
-	{
-		if (t->map[rw][ln] != WALL)
-			ft_error(OPN_MAP, t);
-		ln++;
-	}
 	return (SUCCESS);
 }
 

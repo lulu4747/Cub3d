@@ -44,13 +44,15 @@ void	spawnloc(t_cub *t, t_cam *c, int x, int y)
 	c->posx = x + 0.5;
 	c->posy = y + 0.5;
 	spawndir(t->map[y][x], c);
-	t->map[y][x] = EMPTY;
 }
+
+
 
 int		loophook(t_cub *t)
 {
 	//drawbg(t);
 	raycasting(t, t->ca);
+//	sprcasting(t, t->ca, t->spr);
 	putimg(t, t->all->img, 0, 0);
 	if (t->press == TRUE)
 		gomove(t);
@@ -159,6 +161,7 @@ t_cub	*t_setup(t_cub *t)
 	if (!(t->ca = cam_setup(t->ca)))
 		ft_error(ERR_MALLOC, t);
 	t->g = NULL;
+	t->spr = NULL;
 	return (t);
 }
 

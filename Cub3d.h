@@ -83,30 +83,39 @@
 ** ----------------------------Define Structure---------------------------- **
 */
 
+typedef struct		s_sprite
+{
+	float			x;
+	float			y;
+	int			r;
+	int			d;
+	struct s_sprite		*next;
+}				t_spr;
+
 typedef struct		s_image
 {
 	void			*img;
-	int				*data;
-	int				bpp;
-	int				s_l;
-	int				end;
-}					t_img;
+	int			*data;
+	int			bpp;
+	int			s_l;
+	int			end;
+}				t_img;
 
 typedef	struct		s_texture
 {
 	char			*path;
 	t_img			*img;
-	int				x;
-	int				y;
-}					t_txt;
+	int			x;
+	int			y;
+}				t_txt;
 
 
 typedef struct		s_ray
 {
-	int				hit;
-	int				side;
-	int				x;
-	int				y;
+	int			hit;
+	int			side;
+	int			x;
+	int			y;
 	float			camx;
 	float			dirx;
 	float			diry;
@@ -118,57 +127,57 @@ typedef struct		s_ray
 	float			width;
 	float			height;
 	float			wallx;
-	int				wallstart;
-	int				wallend;
+	int			wallstart;
+	int			wallend;
 	t_txt			*walltxt;
 	float			step;
 	float			txtpos;
-	int				txtx;
-}					t_ray;
+	int			txtx;
+}				t_ray;
 
 typedef struct		s_camera
 {
 	float			posx;
 	float			posy;
-	int				sqposx;
-	int				sqposy;
+	int			sqposx;
+	int			sqposy;
 	float			dirx;
 	float			diry;
 	float			planex;
 	float			planey;
 	float			ms;
 	float			rs;
-	int				stepx;
-	int				stepy;
+	int			stepx;
+	int			stepy;
 	t_ray			*r;
-}					t_cam;
+}				t_cam;
 
 typedef struct		s_grid
 {
-	int				xl;
-	int				yl;
-	int				xc;
-	int				yc;
+	int			xl;
+	int			yl;
+	int			xc;
+	int			yc;
 	float			sqcx;
 	float			sqcy;
-	int				xsize;
-	int				ysize;
-}					t_grid;
+	int			xsize;
+	int			ysize;
+}				t_grid;
 
 typedef struct		s_minimap
 {
 	float			*grid;
 	void			*mnmap;
 	void			*mwall;
-	int				*mdata;
-	int				mbpp;
-	int				ms_l;
-	int				mend;
-	int				*mwdata;
-	int				mwb;
-	int				mws;
-	int				mwe;
-}					t_mmap;
+	int			*mdata;
+	int			mbpp;
+	int			ms_l;
+	int			mend;
+	int			*mwdata;
+	int			mwb;
+	int			mws;
+	int			mwe;
+}				t_mmap;
 
 typedef	struct		s_cub
 {
@@ -176,34 +185,35 @@ typedef	struct		s_cub
 	void			*scr;
 	void			*bg;
 	char			*tmp;
-	int				*r;
+	int			*r;
 	t_txt			*no;
 	t_txt			*we;
 	t_txt			*ea;
 	t_txt			*so;
 	t_txt			*s;
-	int				f;
-	int				c;
+	int			f;
+	int			c;
 	char			**map;
 	t_img			*all;
-	int				minmap;
-	int				press;
-	int				keyone;
-	int				keytwo;
-	int				keythree;
-	int				jump;
+	int			minmap;
+	int			press;
+	int			keyone;
+	int			keytwo;
+	int			keythree;
+	int			jump;
 	float			time;
 	t_cam			*ca;
 	t_mmap			*m;
 	t_grid			*g;
 	t_txt			*test;
-}					t_cub;
+	t_spr			*spr;
+}				t_cub;
 
 /*
 ** ----------------------------------Start--------------------------------- **
 */
 
-int					ft_start(t_cub *t);
+int				ft_start(t_cub *t);
 void				ft_loop(t_cub *t);
 
 
@@ -211,7 +221,7 @@ void				ft_loop(t_cub *t);
 ** ----------------------------------Utils--------------------------------- **
 */
 
-int					loophook(t_cub *t);
+int				loophook(t_cub *t);
 t_cam				*cam_setup(t_cam *c);
 t_mmap				*mm_setup(t_mmap *m);
 t_cub				*t_setup(t_cub *t);
@@ -223,16 +233,16 @@ void				kill(t_cub *t);
 ** ---------------------------------Parsing-------------------------------- **
 */
 
-int					ft_resolution(t_cub *t, char *line);
-int					ft_texture(t_cub *t, char *line, int type);
-int					ft_color(t_cub *t, char *line, int type);
-int					ft_map(t_cub *t, char *line, int fd);
-int					ft_parsing(t_cub *t, int fd);
-int					ft_check_object(int c, char *set);
-int					ft_map_browser(t_cub *t, int len);
-int					ft_check_map(t_cub *t);
-int					ft_get_type(char *line, t_cub *t);
-int					ft_parse_line(t_cub *t, char *line, int check, int fd);
+int				ft_resolution(t_cub *t, char *line);
+int				ft_texture(t_cub *t, char *line, int type);
+int				ft_color(t_cub *t, char *line, int type);
+int				ft_map(t_cub *t, char *line, int fd);
+int				ft_parsing(t_cub *t, int fd);
+int				ft_check_object(int c, char *set);
+int				ft_map_browser(t_cub *t, int len);
+int				ft_check_map(t_cub *t);
+int				ft_get_type(char *line, t_cub *t);
+int				ft_parse_line(t_cub *t, char *line, int check, int fd);
 
 /*
 ** -----------------------------Structure Setup---------------------------- **
@@ -268,17 +278,17 @@ void				putcam(t_cub *t, t_mmap *m, t_cam *c);
 ** --------------------------------Controls-------------------------------- **
 */
 
-int					key(int key, t_cub *t);
-int					release(int key, t_cub *t);
+int				key(int key, t_cub *t);
+int				release(int key, t_cub *t);
 
 /*
 ** ------------------------------Error Manager----------------------------- **
 */
 
-int					ft_check_params(t_cub *t);
+int				ft_check_params(t_cub *t);
 void				ft_error(int error, t_cub *t);
 void				ft_identifier_error(int type);
-int					ft_double_entry_check(int type, t_cub *t);
+int				ft_double_entry_check(int type, t_cub *t);
 
 /*
 ** ----------------------------------End----------------------------------- **
@@ -288,8 +298,7 @@ void				freecam(t_cub *t, t_cam *c);
 void				freemmap(t_cub *t, t_mmap *m);
 void				freeall(t_cub *t);
 void				kill(t_cub *t);
-
-int					release(int key, t_cub *t);
+int				release(int key, t_cub *t);
 void				gomove(t_cub *t);
 
 #endif

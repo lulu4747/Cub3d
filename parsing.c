@@ -94,7 +94,7 @@ int ft_color(t_cub *t, char *line, int type)
 int	ft_map(t_cub *t, char *line, int fd)
 {
 	char	*buf;
-	int		check;
+	int	check;
 
 	if (!(buf = ft_strdup(line)))
 		ft_error(ERR_MALLOC, t);
